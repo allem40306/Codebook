@@ -1,5 +1,3 @@
-bitset<N>is_notp;
-vector<int>p;//prime
 void PrimeTable(){
     is_notp.reset();
 	is_notp[0] = is_notp[1] = 1;

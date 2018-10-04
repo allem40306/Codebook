@@ -1,5 +1,3 @@
-bool b[N];
-int n,dis[N][N],dp[N][100000];
 void btb(int &x){
 	x=0;
 	for(int i=0,j=1;i<n;i++,j*=2)x+=b[i]*j;

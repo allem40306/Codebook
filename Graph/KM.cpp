@@ -25,6 +25,12 @@ void update() {
 }
 void KM() {//reset lx ly left
 	for (int i = 1; i <= n; i++) {
+		Left[i] = Lx[i] = Ly[i] = 0;
+		for (int j = 1; j <= n; j++) {
+			Lx[i] = max(Lx[i], w[i][j]);
+		}
+	}
+	for (int i = 1; i <= n; i++) {
 		while (1) {
 			vx.reset(); vy.reset();
 			if (match(i))break;
