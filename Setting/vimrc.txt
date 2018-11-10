@@ -1,0 +1,29 @@
+syntax on
+color torte
+set nu ts=4 sw=4 ai mouse=a bs=2 ci hls  ru nocp showmatch ar fencs=utf-8
+set guifont=Consolas:h10
+filetype plugin indent on
+so $VIMRUNTIME/mswin.vim
+behave mswin
+
+autocmd CursorMoved  * exe printf('match VisualNOS /\V\<%s\>/', escape(expand('<cword>'), '/\'))
+autocmd CursorMovedi * exe printf('match VisualNOS /\V\<%s\>/', escape(expand('<cword>'), '/\'))
+
+map <F5> :r ~/sample.cpp<CR>
+map <F9> :call Compile()<CR>
+map! <F9> <ESC>:call Compile()<CR>
+map <F10> :call Run()<CR>
+map! <F10> <ESC>:call Run()<CR>
+
+func! Compile()
+    exec "w"
+    exec "!g++ -Wall -Wshadow -std=gnu++0x % -o %< 2>log.txt"
+    exe "cg log.txt"
+    cw 5
+endfunc
+
+func! Run()
+    exec "!./%<"  # "!%<" if windows
+endfunc
+
+cd ~/Desktop # C:\Users\???\Desktop
