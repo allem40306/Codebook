@@ -1,3 +1,19 @@
+struct edge{
+    int s,t;
+    LL d;
+    edge(){};
+    edge(int s,int t,LL d):s(s),t(t),d(d){}
+};
+
+struct heap{
+    LL d;
+    int p; //point
+    heap(){};
+    heap(LL d,int p):d(d),p(p){}
+    bool operator <(const heap& b)const{
+        return d>b.d;
+    }
+};
 struct Dijkstra{
     int n,m;
     bool vis[N];
