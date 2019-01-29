@@ -1,0 +1,1 @@
+/* cmp 不能 return true */
