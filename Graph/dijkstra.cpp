@@ -1,60 +1,37 @@
-struct edge{
-    int s,t;
-    LL d;
-    edge(){};
-    edge(int s,int t,LL d):s(s),t(t),d(d){}
+struct Edge{
+    int from,to,w;
 };
+vector<Edge>E;
+vector<int>v[N];
+bitset<N> vis;
+void init(){
+    E.clear();
+    for(int i=0;i<N;i++){
+        v[i].clear();
+    }
+}
 
-struct heap{
-    LL d;
-    int p; //point
-    heap(){};
-    heap(LL d,int p):d(d),p(p){}
-    bool operator <(const heap& b)const{
-        return d>b.d;
-    }
-};
-struct Dijkstra{
-    int n,m;
-    bool vis[N];
-    vector<edge>edges;
-    vector<int>g[N];
-    LL d[N];
-    int f[N];
-    void init(int nn){
-        n=nn;
-        for(int i=0;i<n;i++){
-            g[i].clear();
-        }
-        edges.clear();
-    }
-    void add_edge(int s,int t,LL d){
-        edges.push_back(edge(s,t,d));
-        g[s].push_back(edges.size()-1);
-    }
-    void dijkstra(int ss){
-        priority_queue<heap>Q;
-        for(int i=0;i<n;i++){
-            d[i]=INF;
-        }
-        d[ss]=0;
-        f[ss]=-1;
-        memset(vis,0,sizeof(vis));
-        Q.push(heap(0,ss));
-        heap x;
-        while(!Q.empty()){
-            x=Q.top(); Q.pop();
-            int p=x.p;
-            if(vis[p])continue;
-            vis[p]=1;
-            for(int i=0;i<g[p].size();i++){
-                edge& e=edges[g[p][i]];
-                if(d[e.t]>d[p]+e.d){
-                    d[e.t]=d[p]+e.d;
-                    f[e.t]=g[p][i];
-                    Q.push(heap(d[e.t],e.t));
-                }
+void addEdge(int from,int to,int w){
+    v[from].push_back(E.size());
+    E.push_back(Edge{from,to,w});
+}
+
+void dijkstra(int s,int d[],int p[]){// set d[] INF && set p[] -1
+    d[s]=0;
+    priority_queue<PII,vector<PII>,greater<PII>>pq;
+    vis.reset();
+    pq.push(MP(d[s],s));
+    while(!pq.empty()){
+        PII k=pq.top(); pq.pop();
+        if(vis[k.second])continue;
+        vis[k.second]=true;
+        for(auto it:v[k.second]){
+            Edge e=E[it];
+            if(d[e.to]>d[e.from]+e.w){
+                d[e.to]=d[e.from]+e.w;
+                p[e.to]=e.from;
+                pq.push(MP(d[e.to],e.to));
             }
         }
     }
-}d1,d2;
+}

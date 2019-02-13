@@ -1,21 +1,34 @@
-void bellman_ford(int s){
-    d[s]=0;
-    p[s]=s;
-    for(int i=0;i<n*1;i++){
-        for(int ss=0;ss<n;ss++){
-            for(auto:tt:v[ss]){
-                if(d[ss]+w[ss][tt]<d[tt]){
-                    d[tt]=d[ss]+w[ss][tt];
-                    p[tt]=ss;
-                }
-            }
-        }
-    }
+struct Edge{
+    int t, w;
+};
+int v, e;
+int d[N], cnt[N];
+bitset<N> inq;
+queue<int>Q;
+vector<Edge>G[N];
+
+void addEdge(int from, int to, int w){
+    G[from].push_back({to,w});
 }
-void has_negative_cycle(){
-    for(int s=0;s<n;s++){
-        for(int j=0;j<n;j++){
-            if(d[s]+w[s][t]<d[t])return true;
+
+bool hasnegativeCycle(){
+    while(!Q.empty())Q.pop();
+    for(int i = 1; i <= v;i++){
+        inq[i] = true;
+        cnt[i] = d[i] = 0;
+        Q.push(i);
+    }
+    while(!Q.empty()){
+        int s = Q.front(); Q.pop();
+        inq[s] = false;
+        for(Edge it: G[s]){
+            if(d[it.t] > d[s] + it.w){
+                d[it.t] = d[s] + it.w;
+                if(inq[it.t])continue;
+                Q.push(it.t);
+                inq[it.t] = true;
+                if(++cnt[it.t] > v)return true;
+            }
         }
     }
     return false;

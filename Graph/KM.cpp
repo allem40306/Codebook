@@ -1,3 +1,8 @@
+int n;
+int Left[N];
+double w[N][N], Lx[N], Ly[N];
+bitset<N> vx, vy;
+
 bool match(int i) {
 	vx[i] = true;
 	for (int j = 1; j <= n; j++) {
@@ -11,6 +16,7 @@ bool match(int i) {
 	}
 	return false;
 }
+
 void update() {
 	double a = 1e30;
 	for (int i = 1; i <= n; i++) {
@@ -23,7 +29,8 @@ void update() {
 		if (vy[i])Ly[i] += a;
 	}
 }
-void KM() {//reset lx ly left
+
+void KM() {
 	for (int i = 1; i <= n; i++) {
 		Left[i] = Lx[i] = Ly[i] = 0;
 		for (int j = 1; j <= n; j++) {
