@@ -7,7 +7,7 @@ bool match(int i) {
 	vx[i] = true;
 	for (int j = 1; j <= n; j++) {
 		if ((fabs(Lx[i] + Ly[j] - w[i][j]) < 1e-9) && !vy[j]) {
-			vy[j] = 1;
+			vy[j] = true;
 			if (!Left[j] || match(Left[j])) {
 				Left[j] = i;
 				return true;
@@ -38,7 +38,7 @@ void KM() {
 		}
 	}
 	for (int i = 1; i <= n; i++) {
-		while (1) {
+		while (true) {
 			vx.reset(); vy.reset();
 			if (match(i))break;
 			update();
