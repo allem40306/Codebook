@@ -20,8 +20,8 @@ if ! command -v texlua > /dev/null; then
   cd ..
 fi
 
-# Just including texlua so the cache check above works
-tlmgr install luatex
+# Just including xelatex so the cache check above works
+tlmgr install xelatex
 
 # In the case you have to install packages manually, you can use an index of packages like
 # http://ctan.mirrors.hoobly.com/systems/texlive/tlnet/archive/
