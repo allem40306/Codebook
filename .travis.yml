@@ -17,8 +17,11 @@ deploy:
   provider: releases
   api_key:
     secure: pCuYTPwOsslmNJzsbUdzzwabI5HRN9CvjqE47sgEg6eTfiV7z9h2SSlmZXvlwcGy8IyxtfmCbxRQ5DjMoj2AjquA7mMdzxp64ryNg/LxNGKeENGCOidiSUdZ/7muDL9qVPt3khkGnporGUJzzak8QbUWQ5JegHXP0Xcod9TlhKgse3xWXg0ahN2s4LsKvh2mTbwnG/+wICUsYs935RIaAo8172/idrUfYZh2VuaPZ1HfCXm19/IMMF5IfcGyF0In4cT4yuxEEhrXanlODePrIkJt+RdIqRquWK3c0ZS+TiE/OzOCdJBLhsj0nU6gErws51lNcYCv93noZUhWlMM8Cr2zE/QFiBqEiqJfBpptOHPS7FqifA49bUUpt38dlf4geHCtpkuMskbjGm+MAxtS4l2/GbrICLrXX4/zppIfAb8Gq65kYmGpN4bwauAftxF7+okWLrUOooRGnPfQrBfwDckcGgpn/xye++hALSwghLopyGjq8ZFZuHpyph00DoF7R4K2m02kxUmyE1wzWV1pK2+U4WTJIeDXdrF+ksIUaXVBrIIXUa3fTLFrJsK55OFWSHFUmyneK30nSUoIY5VjI1SODhFUVFb1j0RzHbLx4kltCdaT3I+L4Rq6gyLHW4C4J4+aJPXxsvzeLYdh8cevWxK9Tu6u4xzSAKSBFs+54QI=
-  file: codebook.pdf
+  file: 
+  - ./codebook.pdf
   skip_cleanup: true
   on:
     tags: false
     branch: master
+notifications:
+  email: false
