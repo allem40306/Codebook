@@ -15,8 +15,7 @@ script:
 - latexmk -pdfxe codebook.tex
 deploy:
   provider: releases
-  api_key:
-    secure: nLYjbTNaqd7X1UYFwsnnniSSG0hJzU0MdjHOEV01O8WBDHM+fMa/sdqaW4YsVk6Ax3/TO+xYcAS5gTsOijr8XkMPJlbtOQXpUbNcvnM3uLsJYCVEOGqUTuHrtLmPaGVh8zVfYc2mMaExrY05ZoNJcmJBRLLsUwANzuECYBs6rgtkSxVVHLlVclt75mnAh9gPA9UqOlzJyeqQSkaq2m/pQhfHxccx1g6b/xYVKkVPSHwJ0/DFXTI/DKWOPGTPyF6l7H6CSeefLj5K6IeMF6h2oECrrWL98ujjZXTpOaFYKbDFLmvG8n4f9HDRknIqKn56g2dDgIO/2kgGfIfF0tl0enyWL0Yft20nU57gTpCcXf6GZJXl+VTmmjgqPJa0ikX2v16WudZeqLNFIaB9CJ+0VqYnJBZx6wiee3xpZxKbEhCmD8cZuD9MzcQtsRzzA+eehUi1lvn2ba568VJPmKLGK9j28SkHIAVwCsLDH1PqW5TG6ZCye6orS3frA7HZZkiV3+kVZWeI/84P1q+jd3bFGn/q1yIBmtU2wPZlWeNIEDkVDz+jtWGSq9eHSykkWfsQNjLV/6Jd6W5m3rlYTdGE/P+RTADyv2nUUDL0HxitwvYUfUbC8K5y/CsRnMWKRBMy5zRLHylxdGAPWMPpdM9cVWHcq5KA8Lo5KsEJWxAlUVk=
+  api_key: GITHUB_OAUTH_TOKEN
   file: codebook.pdf
   on:
     repo: allem40306/Codebook
