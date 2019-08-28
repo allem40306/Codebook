@@ -15,12 +15,11 @@ script:
 - latexmk -pdfxe codebook.tex
 deploy:
   provider: releases
-  api_key: {GITHUB_TOKEN}
+  api_key: $GITHUB_TOKEN
   file: 
   - ./codebook.pdf
   skip_cleanup: true
   on:
-    tags: false
     branch: master
 notifications:
   email: false
