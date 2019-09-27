@@ -36,7 +36,7 @@ struct dinic{
 		int res = 0;
 		while (now[u] < e[u].size()){
 			Edge &it = e[u][now[u]];
-			if (it.f>0 && level[it.v] == level[u] + 1){
+			if (it.f > 0 && level[it.v] == level[u] + 1){
 				int tf = dfs(it.v, min(nf, it.f));
 				res += tf; nf -= tf; it.f -= tf;
 				e[it.v][it.re].f += tf;
