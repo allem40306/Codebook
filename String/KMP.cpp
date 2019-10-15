@@ -9,7 +9,9 @@ void bulid_fail_funtion(string B, int *fail)
             current_pos = fail[current_pos];
         }
         if (B[current_pos + 1] == B[i])
+        {
             current_pos++;
+        }
         fail[i] = current_pos;
     }
 }
