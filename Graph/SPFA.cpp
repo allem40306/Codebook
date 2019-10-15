@@ -32,20 +32,20 @@ void dfs(int start)
     memset(book, false, sizeof(book));
 
     while (!st.empty())
-        {
-            int cur = st.top();
-            // cout << cur << endl;
-            st.pop();
-            lon[cur] = -MAX;
-            book[cur] = true;
+    {
+        int cur = st.top();
+        // cout << cur << endl;
+        st.pop();
+        lon[cur] = -MAX;
+        book[cur] = true;
 
-            for (int i = 0; i < map[cur].size(); i++)
-                {
-                    int next = map[cur][i].d;
-                    if (!book[next])
-                        st.push(next);
-                }
+        for (int i = 0; i < map[cur].size(); i++)
+        {
+            int next = map[cur][i].d;
+            if (!book[next])
+                st.push(next);
         }
+    }
 }
 
 void spfa(int start)
@@ -61,33 +61,33 @@ void spfa(int start)
     inqueue[start] = true;
 
     while (!q.empty())
+    {
+        int cur = q.front();
+        q.pop();
+        inqueue[cur] = false;
+        // cout << "AT: " << cur << " " << cnt[cur] << endl;
+        cnt[cur]++;
+        if (cnt[cur] > n)
         {
-            int cur = q.front();
-            q.pop();
-            inqueue[cur] = false;
-            // cout << "AT: " << cur << " " << cnt[cur] << endl;
-            cnt[cur]++;
-            if (cnt[cur] > n)
-                {
-                    dfs(cur);
-                    return;
-                }
-
-            for (int i = 0; i < map[cur].size(); i++)
-                {
-                    int next = map[cur][i].d;
-
-                    if (lon[next] > lon[cur] + map[cur][i].l)
-                        {
-                            lon[next] = lon[cur] + map[cur][i].l;
-                            if (!inqueue[next] && cnt[cur] <= n)
-                                {
-                                    q.push(next);
-                                    inqueue[next] = true;
-                                }
-                        }
-                }
+            dfs(cur);
+            return;
         }
+
+        for (int i = 0; i < map[cur].size(); i++)
+        {
+            int next = map[cur][i].d;
+
+            if (lon[next] > lon[cur] + map[cur][i].l)
+            {
+                lon[next] = lon[cur] + map[cur][i].l;
+                if (!inqueue[next] && cnt[cur] <= n)
+                {
+                    q.push(next);
+                    inqueue[next] = true;
+                }
+            }
+        }
+    }
 }
 
 int main()
@@ -95,13 +95,13 @@ int main()
     cin >> n >> m;
 
     for (int i = 0; i < m; i++)
-        {
-            int a, b;
-            LL c;
-            cin >> a >> b >> c;
+    {
+        int a, b;
+        LL c;
+        cin >> a >> b >> c;
 
-            map[a].push_back((XXX){b, c});
-        }
+        map[a].push_back((XXX){b, c});
+    }
 
     spfa(1);
 

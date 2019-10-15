@@ -10,10 +10,10 @@ void modify(int L, int R, int x, int a, int b, int mo)
     if (b < L || R < a)
         return;
     if (L == R)
-        {
-            heap[x - 1] += mo;
-            return;
-        }
+    {
+        heap[x - 1] += mo;
+        return;
+    }
     int M = (L + R) >> 1;
     modify(L, M, (x << 1), a, b, mo);
     modify(M + 1, R, (x << 1) + 1, a, b, mo);

@@ -22,20 +22,18 @@ void convexhull()
     p1.resize(p.size());
     int m = 0;
     for (int i = 0; i < p.size(); i++)
-        {
-            while (m > 1 &&
-                   (p1[m - 1] - p1[m - 2]).cross(p[i] - p1[m - 2]) <= 0)
-                m--;
-            p1[m++] = p[i];
-        }
+    {
+        while (m > 1 && (p1[m - 1] - p1[m - 2]).cross(p[i] - p1[m - 2]) <= 0)
+            m--;
+        p1[m++] = p[i];
+    }
     int k = m;
     for (int i = p.size() - 2; i >= 0; i--)
-        {
-            while (m > k &&
-                   (p1[m - 1] - p1[m - 2]).cross(p[i] - p1[m - 2]) <= 0)
-                m--;
-            p1[m++] = p[i];
-        }
+    {
+        while (m > k && (p1[m - 1] - p1[m - 2]).cross(p[i] - p1[m - 2]) <= 0)
+            m--;
+        p1[m++] = p[i];
+    }
     if (n > 1)
         m--;
     p1.resize(m);

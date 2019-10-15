@@ -22,10 +22,10 @@ void dfs(int cur)
         if (!state[next])
             dfs(next);
         else if (state[next] == 1)
-            {
-                valid = false;
-                return;
-            }
+        {
+            valid = false;
+            return;
+        }
 
     state[cur] = 2;
 
@@ -39,16 +39,16 @@ void topology_sort()
             dfs(i);
 
     if (!valid)
-        {
-            cout << -1 << endl;
-            return;
-        }
+    {
+        cout << -1 << endl;
+        return;
+    }
 
     while (!ans.empty())
-        {
-            cout << ans.top() << endl;
-            ans.pop();
-        }
+    {
+        cout << ans.top() << endl;
+        ans.pop();
+    }
 }
 
 int main()
@@ -58,14 +58,14 @@ int main()
     memset(head, true, sizeof(head));
 
     for (int i = 0; i < m; i++)
-        {
-            int a, b;
-            cin >> a >> b;
+    {
+        int a, b;
+        cin >> a >> b;
 
-            head[b] = false;
+        head[b] = false;
 
-            map[a].push_back(b);
-        }
+        map[a].push_back(b);
+    }
 
     memset(state, 0, sizeof(state));
     valid = true;

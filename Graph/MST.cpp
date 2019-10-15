@@ -35,10 +35,10 @@ int root(int x)
     if (disjoint[x] < 0)
         return x;
     else
-        {
-            disjoint[x] = root(disjoint[x]);
-            return disjoint[x];
-        }
+    {
+        disjoint[x] = root(disjoint[x]);
+        return disjoint[x];
+    }
 }
 
 bool same(int a, int b) { return root(a) == root(b); }
@@ -57,21 +57,21 @@ void kruskal()
 {
     int remain = n - 1;
     for (auto i : v)
+    {
+        if (remain == 0)
+            break;
+
+        if (!same(i.a, i.b))
         {
-            if (remain == 0)
-                break;
+            connect(i.a, i.b);
 
-            if (!same(i.a, i.b))
-                {
-                    connect(i.a, i.b);
+            map[i.a].push_back((node){i.b, i.l});
+            map[i.b].push_back((node){i.a, i.l});
 
-                    map[i.a].push_back((node){i.b, i.l});
-                    map[i.b].push_back((node){i.a, i.l});
-
-                    sum += i.l;
-                    remain--;
-                }
+            sum += i.l;
+            remain--;
         }
+    }
 }
 
 bool book[S];
@@ -84,22 +84,22 @@ void dfs(int start)
     memset(book, false, sizeof(book));
 
     while (!st.empty())
+    {
+        int cur = st.top();
+        // cout << cur << endl;
+        st.pop();
+
+        book[cur] = true;
+
+        for (int i = 0; i < map[cur].size(); i++)
         {
-            int cur = st.top();
-            // cout << cur << endl;
-            st.pop();
-
-            book[cur] = true;
-
-            for (int i = 0; i < map[cur].size(); i++)
-                {
-                    int next = map[cur][i].d;
-                    if (!book[next])
-                        {
-                            st.push(next);
-                        }
-                }
+            int next = map[cur][i].d;
+            if (!book[next])
+            {
+                st.push(next);
+            }
         }
+    }
 }
 
 void init()
@@ -124,12 +124,12 @@ int main()
     cin >> n >> m;
 
     for (int i = 0; i < m; i++)
-        {
-            edge tmp;
-            cin >> tmp.a >> tmp.b >> tmp.l;
+    {
+        edge tmp;
+        cin >> tmp.a >> tmp.b >> tmp.l;
 
-            v.push_back(tmp);
-        }
+        v.push_back(tmp);
+    }
 
     sort(v.begin(), v.end(), cmp);
 

@@ -15,29 +15,29 @@ bool hasnegativeCycle()
     while (!Q.empty())
         Q.pop();
     for (int i = 1; i <= v; i++)
-        {
-            inq[i] = true;
-            cnt[i] = d[i] = 0;
-            Q.push(i);
-        }
+    {
+        inq[i] = true;
+        cnt[i] = d[i] = 0;
+        Q.push(i);
+    }
     while (!Q.empty())
+    {
+        int s = Q.front();
+        Q.pop();
+        inq[s] = false;
+        for (Edge it : G[s])
         {
-            int s = Q.front();
-            Q.pop();
-            inq[s] = false;
-            for (Edge it : G[s])
-                {
-                    if (d[it.t] > d[s] + it.w)
-                        {
-                            d[it.t] = d[s] + it.w;
-                            if (inq[it.t])
-                                continue;
-                            Q.push(it.t);
-                            inq[it.t] = true;
-                            if (++cnt[it.t] > v)
-                                return true;
-                        }
-                }
+            if (d[it.t] > d[s] + it.w)
+            {
+                d[it.t] = d[s] + it.w;
+                if (inq[it.t])
+                    continue;
+                Q.push(it.t);
+                inq[it.t] = true;
+                if (++cnt[it.t] > v)
+                    return true;
+            }
         }
+    }
     return false;
 }

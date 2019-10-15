@@ -9,9 +9,9 @@ void init()
 {
     E.clear();
     for (int i = 0; i < N; i++)
-        {
-            v[i].clear();
-        }
+    {
+        v[i].clear();
+    }
 }
 
 void addEdge(int from, int to, int w)
@@ -27,21 +27,21 @@ void dijkstra(int s, int d[], int p[])
     vis.reset();
     pq.push(MP(d[s], s));
     while (!pq.empty())
+    {
+        PII k = pq.top();
+        pq.pop();
+        if (vis[k.second])
+            continue;
+        vis[k.second] = true;
+        for (auto it : v[k.second])
         {
-            PII k = pq.top();
-            pq.pop();
-            if (vis[k.second])
-                continue;
-            vis[k.second] = true;
-            for (auto it : v[k.second])
-                {
-                    Edge e = E[it];
-                    if (d[e.to] > d[e.from] + e.w)
-                        {
-                            d[e.to] = d[e.from] + e.w;
-                            p[e.to] = e.from;
-                            pq.push(MP(d[e.to], e.to));
-                        }
-                }
+            Edge e = E[it];
+            if (d[e.to] > d[e.from] + e.w)
+            {
+                d[e.to] = d[e.from] + e.w;
+                p[e.to] = e.from;
+                pq.push(MP(d[e.to], e.to));
+            }
         }
+    }
 }

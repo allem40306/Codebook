@@ -30,18 +30,18 @@ struct dinic
         q.push(s);
         level[s] = 0;
         while (!q.empty())
+        {
+            int u = q.front();
+            q.pop();
+            for (auto it : e[u])
             {
-                int u = q.front();
-                q.pop();
-                for (auto it : e[u])
-                    {
-                        if (it.f > 0 && level[it.v] == -1)
-                            {
-                                level[it.v] = level[u] + 1;
-                                q.push(it.v);
-                            }
-                    }
+                if (it.f > 0 && level[it.v] == -1)
+                {
+                    level[it.v] = level[u] + 1;
+                    q.push(it.v);
+                }
             }
+        }
         return level[t] != -1;
     }
     int dfs(int u, int nf)
@@ -50,21 +50,21 @@ struct dinic
             return nf;
         int res = 0;
         while (now[u] < e[u].size())
+        {
+            Edge &it = e[u][now[u]];
+            if (it.f > 0 && level[it.v] == level[u] + 1)
             {
-                Edge &it = e[u][now[u]];
-                if (it.f > 0 && level[it.v] == level[u] + 1)
-                    {
-                        int tf = dfs(it.v, min(nf, it.f));
-                        res += tf;
-                        nf -= tf;
-                        it.f -= tf;
-                        e[it.v][it.re].f += tf;
-                        if (nf == 0)
-                            return res;
-                    }
-                else
-                    now[u]++;
+                int tf = dfs(it.v, min(nf, it.f));
+                res += tf;
+                nf -= tf;
+                it.f -= tf;
+                e[it.v][it.re].f += tf;
+                if (nf == 0)
+                    return res;
             }
+            else
+                now[u]++;
+        }
         if (!res)
             level[u] = -1;
         return res;
@@ -72,14 +72,14 @@ struct dinic
     int flow(int res = 0)
     {
         while (bfs())
+        {
+            int temp;
+            memset(now, 0, sizeof(now));
+            while (temp = (dfs(s, INF)))
             {
-                int temp;
-                memset(now, 0, sizeof(now));
-                while (temp = (dfs(s, INF)))
-                    {
-                        res += temp;
-                    }
+                res += temp;
             }
+        }
         return res;
     }
 } d;

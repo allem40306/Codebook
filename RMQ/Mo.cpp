@@ -41,48 +41,48 @@ int main()
     int ans[N];
     cin >> n >> Q;
     for (int i = 1; i <= n; i++)
-        {
-            cin >> a[i];
-        }
+    {
+        cin >> a[i];
+    }
     int k = floor(sqrt(n / 1.0));
     for (int i = 0; i < Q; i++)
-        {
-            cin >> q[i].L >> q[i].R;
-            q[i].qid = i;
-        }
+    {
+        cin >> q[i].L >> q[i].R;
+        q[i].qid = i;
+    }
     sort(q, q + Q, cmp);
     for (int i = 0; i < Q; i++)
-        {
-            q[i].bid = i / k;
-        }
+    {
+        q[i].bid = i / k;
+    }
     sort(q, q + Q);
     for (int i = 0, curL = 1, curR = 0; i < Q; i++)
+    {
+        // cout<<i<<' '<<q[i].L<<' '<<q[i].R<<'\n';
+        while (curR < q[i].R)
         {
-            // cout<<i<<' '<<q[i].L<<' '<<q[i].R<<'\n';
-            while (curR < q[i].R)
-                {
-                    curR++;
-                    add(a[curR]);
-                }
-            while (q[i].R < curR)
-                {
-                    sub(a[curR]);
-                    curR--;
-                }
-            while (curL < q[i].L)
-                {
-                    sub(a[curL]);
-                    curL++;
-                }
-            while (q[i].L < curL)
-                {
-                    curL--;
-                    add(a[curL]);
-                }
-            ans[q[i].qid] = curmax;
+            curR++;
+            add(a[curR]);
         }
+        while (q[i].R < curR)
+        {
+            sub(a[curR]);
+            curR--;
+        }
+        while (curL < q[i].L)
+        {
+            sub(a[curL]);
+            curL++;
+        }
+        while (q[i].L < curL)
+        {
+            curL--;
+            add(a[curL]);
+        }
+        ans[q[i].qid] = curmax;
+    }
     for (int i = 0; i < Q; i++)
-        {
-            cout << ans[i] << '\n';
-        }
+    {
+        cout << ans[i] << '\n';
+    }
 }
