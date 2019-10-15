@@ -1,17 +1,18 @@
 bool dfs(int s)
 {
-    for(int i = 1; i <= rhs; i++){
-        if(!adj[s][i] || used[i])
+    for (int i = 1; i <= rhs; i++)
         {
-            continue;
+            if (!adj[s][i] || used[i])
+                {
+                    continue;
+                }
+            used[i] = true;
+            if (Left[i] == -1 || dfs(Left[i]))
+                {
+                    Left[i] = s;
+                    return true;
+                }
         }
-        used[i] = true;
-        if(Left[i] == -1 || dfs(Left[i]))
-        {
-            Left[i] = s;
-            return true;
-        }
-    }
     return false;
 }
 
@@ -19,13 +20,13 @@ int sol()
 {
     int ret = 0;
     memset(Left, -1, sizeof(Left));
-    for(int i = 1; i <= lhs; i++)
-    {
-        used.reset();
-        if(dfs(i))
+    for (int i = 1; i <= lhs; i++)
         {
-            ret++;
+            used.reset();
+            if (dfs(i))
+                {
+                    ret++;
+                }
         }
-    }
     return ret;
 }
