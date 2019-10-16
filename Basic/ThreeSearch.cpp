@@ -26,17 +26,22 @@ int main()
     for (cin >> t; i < t; i++)
     {
         for (cin >> n, j = 0; j < n; j++)
+        {
             cin >> h[j].a >> h[j].b >> h[j].c;
+        }
         double L = 0, R = 300, M, MM;
         while (R - L > 1e-9)
         {
             M = L + (R - L) / 3;
             MM = (M + R) / 2;
-            //			cout<<L<<' '<<M<<' '<<MM<<' '<<R<<'\n';
             if (f(M) > f(MM))
+            {
                 L = M;
+            }
             else
+            {
                 R = MM;
+            }
         }
         cout << fixed << setprecision(5) << f(L) << '\n';
     }

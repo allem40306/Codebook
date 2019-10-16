@@ -1,22 +1,29 @@
-istream &operator>>(istream &is, __int128 &x)
+istream &operator>>(istream &in, __int128 &x)
 {
     char buf[30];
-    is >> buf;
+    in >> buf;
     bool minus = false;
     int len = strlen(buf);
     x = 0;
     for (int i = 0; i < len; i++)
     {
         if (i == 0 && buf[i] == '-')
+        {
             minus = true;
+        }
         else
+        {
             x = x * 10 + buf[i] - 48;
+        }
     }
     if (minus)
+    {
         x *= -1;
-    return is;
+    }
+    return in;
 }
-ostream &operator<<(ostream &os, __int128 &x)
+
+ostream &operator<<(ostream &out, __int128 &x)
 {
     vector<int> v;
     __int128 tmp = x;
@@ -30,8 +37,12 @@ ostream &operator<<(ostream &os, __int128 &x)
         tmp /= 10;
     }
     if (minus)
-        os << "-";
+    {
+        out << "-";
+    }
     for (int i = (int)v.size() - 1; i >= 0; i--)
-        os << v[i];
-    return os;
+    {
+        out << v[i];
+    }
+    return out;
 }
