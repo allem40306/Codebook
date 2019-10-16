@@ -1,14 +1,13 @@
-struct dinic
+template <typename T>
+struct Dinic
 {
-    static const int M = 10000;
-    static const int INF = 1e9;
+    int n, s, t, level[M], now[M];
     struct Edge
     {
         int v;
-        int f; // residual flow
+        T rf; // rf: residual flow
         int re;
     };
-    int n, s, t, level[M], now[M];
     vector<Edge> e[M];
     void init(int _n, int _s, int _t)
     {
@@ -16,9 +15,11 @@ struct dinic
         s = _s;
         t = _t;
         for (int i = 0; i <= n; i++)
+        {
             e[i].clear();
+        }
     }
-    void add_edge(int u, int v, int f)
+    void add_edge(int u, int v, T f)
     {
         e[u].push_back({v, f, (int)e[v].size()});
         e[v].push_back({u, f, (int)e[u].size() - 1});
@@ -35,7 +36,7 @@ struct dinic
             q.pop();
             for (auto it : e[u])
             {
-                if (it.f > 0 && level[it.v] == -1)
+                if (it.rf > 0 && level[it.v] == -1)
                 {
                     level[it.v] = level[u] + 1;
                     q.push(it.v);
@@ -44,42 +45,48 @@ struct dinic
         }
         return level[t] != -1;
     }
-    int dfs(int u, int nf)
+    T dfs(int u, T limit)
     {
         if (u == t)
-            return nf;
+            return limit;
         int res = 0;
-        while (now[u] < e[u].size())
+        while (now[u] < (int)e[u].size())
         {
             Edge &it = e[u][now[u]];
-            if (it.f > 0 && level[it.v] == level[u] + 1)
+            if (it.rf > 0 && level[it.v] == level[u] + 1)
             {
-                int tf = dfs(it.v, min(nf, it.f));
-                res += tf;
-                nf -= tf;
-                it.f -= tf;
-                e[it.v][it.re].f += tf;
-                if (nf == 0)
+                T f = dfs(it.v, min(limit, it.rf));
+                res += f;
+                limit -= f;
+                it.rf -= f;
+                e[it.v][it.re].rf += f;
+                if (limit == 0)
+                {
                     return res;
+                }
             }
             else
-                now[u]++;
+            {
+                ++now[u];
+            }
         }
         if (!res)
+        {
             level[u] = -1;
+        }
         return res;
     }
-    int flow(int res = 0)
+    T flow(T res = 0)
     {
         while (bfs())
         {
-            int temp;
+            T tmp;
             memset(now, 0, sizeof(now));
-            while (temp = (dfs(s, INF)))
-            {
-                res += temp;
-            }
+            do{
+                tmp = dfs(s, INF);
+                res += tmp;
+            }while(tmp);
         }
         return res;
     }
-} d;
+};
