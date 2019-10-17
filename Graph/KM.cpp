@@ -83,3 +83,12 @@ struct KM
         }
     }
 };
+
+/*
+usage
+KM<int> km; // declare with weight type
+km.init(n); // initialize with vertex
+km.hungarian(); // calculate
+km.w[][]; // weight array
+km.Left[i] // y_i match x_Left[i] 
+*/
