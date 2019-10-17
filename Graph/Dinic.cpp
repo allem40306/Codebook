@@ -90,3 +90,11 @@ struct Dinic
         return res;
     }
 };
+
+/*
+usage
+Dinic<int> dinic; // declare, flow type is int
+dinic.init(n, s, t); // initialize, n vertexs, start from s to t
+dinic.add_edge(x, y, z); // add edge from x to y, weight is z
+dinic.flow() // calculate max flow 
+*/
