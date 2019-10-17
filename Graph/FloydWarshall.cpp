@@ -1,48 +1,25 @@
-#include <iostream>
-
-#define INF 1e9
-#define LL long long
-
-using namespace std;
-
-int main()
+template <typename T> struct FloydWarshall
 {
-    int n;
-
-    while (cin >> n)
+    T d[MXV][MXV];
+    void init() { memset(d, 0x3f, sizeof(d)); }
+    void floydWarshall(int n)
     {
-        LL dis[n][n];
-        LL ans = INF;
-
-        for (int i = 0; i < n; i++)
-            for (int j = 0; j < n; j++)
-            {
-                cin >> dis[i][j];
-                if (dis[i][j] == 0)
-                    dis[i][j] = INF;
-            }
-
-        for (int i = 0; i < n; i++)
+        for (int k = 1; k <= n; ++k)
         {
-            for (int j = 0; j < n; j++)
+            for (int i = 1; i <= n; ++i)
             {
-                if (i == j)
-                    continue;
-                ans = min(ans, dis[i][j] + dis[j][i]);
-                for (int k = 0; k < n; k++)
+                for (int j = 1; j <= n; ++j)
                 {
-                    dis[i][j] = min(dis[i][j], dis[i][k] + dis[k][j]);
-
-                    ans = min(ans, dis[i][j] + dis[k][i] + dis[j][k]);
+                    d[i][j] = d[j][i] = min(d[i][j], d[i][k] + d[k][j]);
                 }
             }
         }
-
-        if (ans == INF)
-            cout << -1 << endl;
-        else
-            cout << ans << endl;
     }
+};
 
-    return 0;
-}
+/*
+usage
+FloydWarshall<int> floydWarshall; // declare with distace's type
+floydWarshall.init(); // initialize
+FloydWarshall.floydWarshall(); // calculate all-pair shortest path
+*/
