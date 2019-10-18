@@ -58,7 +58,6 @@ int main()
     sort(q, q + Q);
     for (int i = 0, curL = 1, curR = 0; i < Q; i++)
     {
-        // cout<<i<<' '<<q[i].L<<' '<<q[i].R<<'\n';
         while (curR < q[i].R)
         {
             curR++;
