@@ -1,54 +1,76 @@
-struct Treap
-{
-    Treap *l, *r;
-    int val, key, pri;
-    Treap(int _val, int _key)
-        : val(_val), key(_key), l(NULL), r(NULL), pri(rand())
+struct Treap{
+    int val, pri, sz;
+    Treap *lc, *rc;
+    Treap(){}
+    Treap(int _val)
     {
+        val = _val;
+        pri = rand();
+        sz = 1;
+        lc = rc = NULL;
     }
-    Treap(){};
 };
-Treap *merge(Treap *a, Treap *b)
-{
-    if (!a || !b)
-        return a ? a : b;
-    if (a->pri > b->pri)
-    {
-        a->r = merge(a->r, b);
-        return a;
-    }
-    else
-    {
-        b->l = merge(a, b->l);
-        return b;
-    }
+
+int getSize(Treap *a){
+    return (a == NULL ? 0 : a->sz);
 }
-void split(Treap *t, int k, Treap *&a, Treap *&b)
+
+void split(Treap *t, Treap *&a, Treap *&b, int k)
 {
-    if (!t)
+    if(t == NULL)
+    {
         a = b = NULL;
-    else if (t->key <= k)
+        return;
+    }
+    if(getSize(t->lc) < k)
     {
         a = t;
-        split(t->r, k, a->r, b);
+        split(t->rc, a->rc, b, k - getSize(t->lc) - 1);
     }
     else
     {
         b = t;
-        split(t->l, k, a, b->l);
+        split(t->lc, a, b->lc, k);
     }
-    return;
 }
-Treap *insert(Treap *t, int k)
+
+Treap* merge(Treap *a, Treap *b)
 {
-    Treap *tl, *tr;
-    split(t, k, tl, tr);
-    return merge(tl, merge(new Treap(k, ti++), tr));
+    if(!a || !b)
+    {
+        return (a ? a : b);
+    }
+    if(a->pri > b->pri)
+    {
+        a->rc = merge(a->rc, b);
+        return a;
+    }
+    else
+    {
+        b->lc = merge(a, b->lc);
+        return b;
+    }
 }
-Treap *remove(Treap *t, int k)
+
+void Insert(Treap *&t, int x, int p)
 {
-    Treap *tl, *tr;
-    split(t, k - 1, tl, t);
-    split(t, k, t, tr);
-    return merge(tl, tr);
+    Treap *a, *b;
+    split(t, a, b, x);
+    t = merge(a, merge(new Treap(p), b));
 }
+
+void Delete(Treap *&t, int x)
+{
+    Treap *a, *b, *c;
+    split(t, b, c, x);
+    split(b, a, b, x - 1);
+    t = merge(a, c);
+}
+
+/*
+Usage
+Treap *root = NULL; // declare
+root = merge(root, new Treap(val)); // push back
+Insert(root, x, y); // insert y after x-th element
+Delete(root, x); // delete x-th element
+*/
