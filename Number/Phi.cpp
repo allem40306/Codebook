@@ -1,11 +1,11 @@
-void phi_table(int n)
+void phi_table(int n) // [1,n]
 {
     phi[1] = 1;
     for (int i = 2; i <= n; i++)
     {
         if (phi[i])
             continue;
-        for (int j = i; j < n; j += i)
+        for (int j = i; j <= n; j += i)
         {
             if (!phi[j])
                 phi[j] = j;

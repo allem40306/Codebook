@@ -81,7 +81,7 @@ template <typename T> struct MCMF
         }
         return bottleneck;
     }
-    void sol(int s, int t, T D)
+    void sol(int s, int t)
     {
         T mnCost = 0, mxFlow = 0;
         while (spfa(s, t))
