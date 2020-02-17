@@ -7,7 +7,7 @@ using PLL = pair<LL, LL>;
 const int INF = 1e9;
 const int MXN = 0;
 const int MXV = 0;
-#define MP  make_pair
+#define MP make_pair
 #define PB push_back
 #define F first
 #define S second

@@ -23,6 +23,8 @@ struct Dinic
     {
         e[u].push_back({v, f, (int)e[v].size()});
         e[v].push_back({u, f, (int)e[u].size() - 1});
+        // for directional graph
+        // e[v].push_back({u, 0, (int)e[u].size() - 1});
     }
     bool bfs()
     {
@@ -49,7 +51,7 @@ struct Dinic
     {
         if (u == t)
             return limit;
-        int res = 0;
+        T res = 0;
         while (now[u] < (int)e[u].size())
         {
             Edge &it = e[u][now[u]];
