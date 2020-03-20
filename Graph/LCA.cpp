@@ -1,47 +1,62 @@
 const int LOG = 20;
-int par[N][LOG];
-int tin[N], tout[N];
+vector<int> tin(MXV), tout(MXV), depth(MXV);
+int par[MXV][LOG];
 int timer = 0;
+vector<int> G[MXV];
 
-void dfs(int v, int p)
+void dfs(int u, int f)
 {
-    tin[v] = ++timer;
-    par[v][0] = p;
-    for (int it : G[v])
+    tin[u] = ++timer;
+    par[u][0] = f;
+    for (int v : G[u])
     {
-        if (it != p)
-            dfs(it, v);
+        if (v != f)
+        {
+            depth[v] = depth[u] + 1;
+            dfs(v, u);
+        }
     }
-    tout[v] = ++timer;
+    tout[u] = ++timer;
 }
 
-void Doubling()
+void Doubling(int n)
 {
-    for (int i = 1; i < N; ++i)
+    for (int j = 1; j < LOG; ++j)
     {
-        for (int j = 1; j < LOG; ++j)
+        for (int i = 1; i <= n; ++i)
         {
             par[i][j] = par[par[i][j - 1]][j - 1];
         }
     }
 }
 
-bool anc(int v, int u) { return tin[v] <= tin[u] && tout[u] <= tout[v]; }
+bool anc(int u, int v) { return tin[u] <= tin[v] && tout[v] <= tout[u]; }
 
-int LCA(int v, int u)
+int LCA(int u, int v)
 {
-    if (anc(v, u))
-        return v;
+    if (depth[u] > depth[v])
+    {
+        swap(u, v);
+    }
+    if (anc(u, v))
+    {
+        return u;
+    }
     for (int j = LOG - 1; j >= 0; --j)
     {
-        if (!anc(par[v][j], u))
-            v = par[v][j];
+        if (!anc(par[u][j], v))
+            u = par[u][j];
     }
-    return par[v][0];
+    return par[u][0];
 }
 
-int main()
+int dis(int u, int v)
 {
-    dfs(root, root);
-    Doubling();
+    int lca = LCA(u, v);
+    return depth[u] + depth[v] - 2 * depth[lca];
 }
+
+/*
+dfs(root, root);
+Doubling(n);
+*/
