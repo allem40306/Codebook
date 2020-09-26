@@ -1,4 +1,4 @@
-#pragma GCC optimize(2)
+#pragma GCC optimize("O2")
 #include <bits/stdc++.h>
 using namespace std;
 using LL = long long;

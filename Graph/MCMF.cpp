@@ -1,95 +1,101 @@
-template <typename T> struct MCMF
+struct Edge
 {
-    int n, pre[MXV];
-    T dis[MXV], cap[MXV][MXV], flow[MXV][MXV], cost[MXV][MXV];
-    vector<int> edges[MXV];
-    bitset<MXV> inque;
-    queue<int> q;
-    void init(int _n)
+    int v;
+    T cost;
+    int cap;
+    Edge(int _v, int _cost, int _cap) : v(_v), cost(_cost), cap(_cap) {}
+};
+vector<int> dis(MXV), pre(MXV);
+vector<vector<int>> G(MXV);
+int n;
+vector<Edge> edges;
+bitset<MXV> inque;
+queue<int> q;
+void init(int _n)
+{
+    n = _n;
+    edges.clear();
+    for (int i = 0; i <= n; ++i)
     {
-        n = _n;
-        memset(cap, 0, sizeof(cap));
-        memset(flow, 0, sizeof(flow));
-        memset(cost, 0, sizeof(cost));
-        for (int i = 0; i <= n; ++i)
-        {
-            edges[i].clear();
-        }
+        G[i].clear();
     }
-    void addEdge(int u, int v, T c)
+}
+void addEdge(int u, int v, T cost, int cap)
+{
+    G[u].push_back((int)edges.size());
+    edges.push_back(Edge(v, cost, cap));
+    G[v].push_back((int)edges.size());
+    edges.push_back(Edge(u, -cost, 0));
+}
+bool spfa(int s, int t)
+{
+    FOR(i, 0, MXV) { dis[i] = INF; }
+    inque.reset();
+    while (!q.empty())
     {
-        edges[u].push_back(v);
-        edges[v].push_back(u);
-        cost[u][v] = cost[v][u] = c;
+        q.pop();
     }
-    bool spfa(int s, int t)
+    dis[s] = 0;
+    q.push(s);
+    while (!q.empty())
     {
-        fill(begin(dis), end(dis), INF);
-        inque.reset();
-        while (!q.empty())
+        int u = q.front();
+        q.pop();
+        inque[u] = false;
+        FOR(i, 0, G[u].size())
         {
-            q.pop();
-        }
-        dis[s] = 0;
-        q.push(s);
-        inque[s] = true;
-        while (!q.empty())
-        {
-            int u = q.front();
-            q.pop();
-            inque[u] = false;
-            for (int v : edges[u])
+            Edge &e = edges[G[u][i]];
+            if (e.cap > 0 && dis[e.v] > dis[u] + e.cost)
             {
-                if (flow[v][u] > 0 && dis[v] > dis[u] + (-cost[v][u]))
+                dis[e.v] = dis[u] + e.cost;
+                pre[e.v] = G[u][i];
+                if (!inque[e.v])
                 {
-                    dis[v] = dis[u] + (-cost[v][u]);
-                    pre[v] = u;
-                    if (!inque[v])
-                    {
-                        q.push(v);
-                        inque[v] = true;
-                    }
-                }
-                else if (cap[u][v] > flow[u][v] && dis[v] > dis[u] + cost[u][v])
-                {
-                    dis[v] = dis[u] + cost[u][v];
-                    pre[v] = u;
-                    if (!inque[v])
-                    {
-                        q.push(v);
-                        inque[v] = true;
-                    }
+                    q.push(e.v);
+                    inque[e.v] = true;
                 }
             }
         }
-        return dis[t] != INF;
     }
-    void update(int s, int t, T bottleneck)
+    return dis[t] != INF;
+}
+void update(int s, int t, int bottleneck)
+{
+    for (int u = t; u != s;)
     {
-        for (int u = t; u != s; u = pre[u])
-        {
-            flow[pre[u]][u] += bottleneck;
-            flow[u][pre[u]] -= bottleneck;
-        }
+        int pos = pre[u];
+        edges[pos].cap -= bottleneck;
+        edges[pos ^ 1].cap += bottleneck;
+        u = edges[pos ^ 1].v;
     }
-    T findbottleneck(int s, int t)
+}
+void sol(int s, int t)
+{
+    int mnCost = 0;
+    while (spfa(s, t))
     {
-        T bottleneck = INF;
-        for (int u = t; u != s; u = pre[u])
-        {
-            bottleneck = min(bottleneck, cap[pre[u]][u] - flow[pre[u]][u]);
-        }
-        return bottleneck;
+        update(s, t, 1);
+        mnCost += dis[t];
     }
-    void sol(int s, int t)
+    cout << mnCost << '\n';
+}
+
+int main()
+{
+    IOS;
+    int n, m;
+    while (cin >> n >> m)
     {
-        T mnCost = 0, mxFlow = 0;
-        while (spfa(s, t))
+        init(n);
+        for (int i = 0, f, t, w; i != m; ++i)
         {
-            T bottleneck = findbottleneck(s, t);
-            update(s, t, bottleneck);
-            mxFlow += bottleneck;
-            mnCost += bottleneck * dis[t];
+            cin >> f >> t >> w;
+            addEdge(f, t, w, 1);
+            addEdge(t, f, w, 1);
         }
+        int s = 0, t = n + 1;
+        addEdge(s, 1, 0, 2);
+        addEdge(n, t, 0, 2);
+        sol(s, t);
     }
-};
+}
