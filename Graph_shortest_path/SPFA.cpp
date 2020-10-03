@@ -1,114 +1,51 @@
-#include <cstring>
-#include <iostream>
-#include <queue>
-#include <stack>
-#include <vector>
-
-#define S 50050
-#define MAX 1e11
-#define LL long long
-
-using namespace std;
-
-typedef struct
+struct Edge
 {
-    int d;
-    LL l;
-} XXX;
-vector<XXX> map[S];
-
-LL lon[S];
-int cnt[S];
-int n, m;
-bool cycle;
-bool inqueue[S];
-
-void dfs(int start)
+    int at;
+    long long cost;
+};
+int n;
+long long dis[MAXN];
+vector<Edge> G[MAXN];
+void init()
 {
-    stack<int> st;
-    st.push(start);
-
-    bool book[S];
-    memset(book, false, sizeof(book));
-
-    while (!st.empty())
+    for (int i = 0; i < n; i++)
     {
-        int cur = st.top();
-        // cout << cur << endl;
-        st.pop();
-        lon[cur] = -MAX;
-        book[cur] = true;
-
-        for (int i = 0; i < map[cur].size(); i++)
-        {
-            int next = map[cur][i].d;
-            if (!book[next])
-                st.push(next);
-        }
+        G[i].clear();
+        dis[i] = INF;
     }
 }
-
-void spfa(int start)
+bool SPFA(int st)
 {
-    memset(inqueue, false, sizeof(inqueue));
-    for (int i = 0; i < S; i++)
-        lon[i] = MAX;
-    cycle = false;
-
+    vector<int> cnt(n, 0);
+    vector<bool> inq(n, false);
     queue<int> q;
-    q.push(start);
-    lon[start] = 0;
-    inqueue[start] = true;
 
+    q.push(st);
+    dis[st] = 0;
+    inq[st] = true;
     while (!q.empty())
     {
-        int cur = q.front();
+        int now = q.front();
         q.pop();
-        inqueue[cur] = false;
-        // cout << "AT: " << cur << " " << cnt[cur] << endl;
-        cnt[cur]++;
-        if (cnt[cur] > n)
+        inq[now] = false;
+        for (auto &e : G[now])
         {
-            dfs(cur);
-            return;
-        }
-
-        for (int i = 0; i < map[cur].size(); i++)
-        {
-            int next = map[cur][i].d;
-
-            if (lon[next] > lon[cur] + map[cur][i].l)
+            if (dis[e.at] > dis[now] + e.cost)
             {
-                lon[next] = lon[cur] + map[cur][i].l;
-                if (!inqueue[next] && cnt[cur] <= n)
+                dis[e.at] = dis[now] + e.cost;
+                if (!inq[e.at])
                 {
-                    q.push(next);
-                    inqueue[next] = true;
+                    cnt[e.at]++;
+                    if (cnt[e.at] > n)
+                    {
+                        // negative cycle
+                        return false;
+                    }
+                    inq[e.at] = true;
+                    q.push(e.at);
                 }
             }
         }
     }
-}
-
-int main()
-{
-    cin >> n >> m;
-
-    for (int i = 0; i < m; i++)
-    {
-        int a, b;
-        LL c;
-        cin >> a >> b >> c;
-
-        map[a].push_back((XXX){b, c});
-    }
-
-    spfa(1);
-
-    if (lon[n] >= MAX || lon[n] <= -MAX)
-        cout << "QAQ" << endl;
-    else
-        cout << lon[n] << endl;
-
-    return 0;
+    return true;
 }

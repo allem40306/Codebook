@@ -13,7 +13,7 @@ struct loc
     }
 };
 vector<loc> p, p1;
-int n;
+
 void convexhull()
 {
     sort(p.begin(), p.end());
@@ -34,7 +34,7 @@ void convexhull()
             m--;
         p1[m++] = p[i];
     }
-    if (n > 1)
+    if (m > 1)
         m--;
     p1.resize(m);
 }

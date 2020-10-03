@@ -1,8 +1,11 @@
+int lhs, rhs, Left[MXV], G[MXV][MXV];
+bitset<MXV> used;
+
 bool dfs(int s)
 {
     for (int i = 1; i <= rhs; i++)
     {
-        if (!adj[s][i] || used[i])
+        if (!G[s][i] || used[i])
         {
             continue;
         }

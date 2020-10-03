@@ -15,7 +15,7 @@ void init(int _n)
 {
     n = _n;
     edges.clear();
-    for (int i = 0; i <= n; ++i)
+    for (int i = 0; i <= MXV; ++i)
     {
         G[i].clear();
     }
