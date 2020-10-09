@@ -9,6 +9,7 @@ void sol(char *s)
         ss[si++] = s[i];
         ss[si++] = '#';
     }
+    ss[si++] = '_';
     int mx = 0, id = 0;
     FOR(i, 0, si)
     {

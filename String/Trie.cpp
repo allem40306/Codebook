@@ -1,33 +1,54 @@
-// init sz=1 trie[0]=0
-void insert(string s)
+struct Node
 {
-    int u = 0, v;
-    for (int i = 0; i < r.size(); i++)
+    char ch;
+    int v;
+    Node *next[26];
+    Node()
     {
-        v = r[i] - 'a';
-        if (!trie[u][v])
-        {
-            memset(trie[sz], 0, sizeof(trie[sz]));
-            val[sz] = 0;
-            trie[u][v] = sz++;
-        }
-        u = trie[u][v];
+        v = 0;
+        FOR(i, 0, 26) next[i] = NULL;
     }
-    val[u] = 1;
+};
+
+void insert(Node *root, string s)
+{
+    FOR(i, 0, s.size())
+    {
+        int v = s[i] - 'a';
+        if (root->next[v] == NULL)
+        {
+            root->next[v] = new Node();
+        }
+        root = root->next[v];
+        ++root->v;
+        root->ch = s[i];
+    }
     return;
 }
-void search(string s, int i)
+void search(Node *root, string s)
 {
-    int u = 0, v;
-    dp[i] = 0;
-    for (int j = i; j < s.size(); j++)
+    FOR(i, 0, s.size())
     {
-        v = s[j] - 'a';
-        if (!trie[u][v])
+        int v = s[i] - 'a';
+        root = root->next[v];
+        if (root->v == 1)
+        {
+            cout << s << ' ' << s.substr(0, i + 1) << '\n';
             return;
-        u = trie[u][v];
-        if (val[u])
-            dp[i] = (dp[i] + dp[j + 1]) % MOD;
+        }
     }
-    return;
+    cout << s << ' ' << s << '\n';
+}
+
+int main()
+{
+    vector<string> v;
+    string s;
+    Node *root = new Node();
+    while (cin >> s)
+    {
+        insert(root, s);
+        v.push_back(s);
+    }
+    FOR(i, 0, v.size()) { search(root, v[i]); }
 }

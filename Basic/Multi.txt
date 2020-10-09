@@ -1,0 +1,3 @@
+multiset<int>
+equal_range (T1 a)：回傳 iterator 的 pair<lower_bound (a),upper_bound (a)> ，為 a 所在範圍
+erase (T1 a)：刪除所有元素 a，如果只要刪除一個，用 s.erase (s.find (a))
