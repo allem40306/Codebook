@@ -1,20 +1,25 @@
-template <typename T, int N = 2> struct Mat
-{ // Matrix
-    unsigned long long v[N][N];
-    Mat operator*(Mat b) const
+struct Mat
+{
+    int sz;
+    LL x[MXN][MXN];
+    Mat() { memset(x, 0, sizeof(x)); }
+    Mat(int _sz)
     {
-        Mat val;
-        for (int i = 0; i < N; i++)
+        sz = _sz;
+        memset(x, 0, sizeof(x));
+    }
+    Mat operator*(Mat a)
+    {
+        Mat res(sz);
+        FOR(i, 1, sz + 1) FOR(j, 1, sz + 1) FOR(k, 1, sz + 1)
         {
-            for (int j = 0; j < N; j++)
-            {
-                val.v[i][j] = 0;
-                for (int k = 0; k < N; k++)
-                {
-                    val.v[i][j] += v[i][k] * b.v[k][j];
-                }
-            }
+            res.x[i][j] += x[i][k] * a.x[k][j];
+            res.x[i][j] %= MOD;
         }
-        return val;
+        return res;
+    }
+    void output()
+    {
+        FOR(i, 1, sz + 1) FOR(j, 1, sz + 1) cout << x[i][j] << " \n"[j == sz];
     }
 };
