@@ -1,7 +1,0 @@
-From 日月掛長
-unsigned int / unsigned long +l / unsigned long long +ll 
-int __builtin_ffs: 返回右起第一個1的位置
-int __builtin_clz: 返回左起第一個1之前0的個數
-int __builtin_ctz: 返回右起第一個1之後的0的個數
-int __builtin_popcount: 返回1的個數
-int __builtin_parity: 返回1的個數的奇偶性(1的個數 mod 2的值)
