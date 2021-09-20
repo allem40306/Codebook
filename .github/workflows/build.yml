@@ -45,7 +45,7 @@ jobs:
           mv tmp/codebook.pdf .
       - name: Commit
         run: |
-          timedatectl set-timezone "Asia/Taipei"
+          sudo timedatectl set-timezone "Asia/Taipei"
           git config --local user.email ${{ secrets.GH_EMAIL }}
           git config --local user.name ${{ github.repository_owner }}
           git add codebook.pdf
