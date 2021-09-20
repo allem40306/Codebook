@@ -41,7 +41,7 @@ jobs:
         run: |
           mkdir tmp
           mv codebook.pdf tmp
-          git checkout gh-pages
+          git checkout pdf
           mv tmp/codebook.pdf .
       - name: Push codebook
         uses: stefanzweifel/git-auto-commit-action@v4
