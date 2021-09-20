@@ -43,15 +43,11 @@ jobs:
           mv codebook.pdf tmp
           git checkout gh-pages
           mv tmp/codebook.pdf .
-      - name: Commit
-        run: |
-          sudo timedatectl set-timezone "Asia/Taipei"
-          git config --local user.email ${{ secrets.GH_EMAIL }}
-          git config --local user.name ${{ github.repository_owner }}
-          git add codebook.pdf
-          git commit -m "Built on: `date +'%Y-%m-%d-%T'`"
       - name: Push codebook
-        uses: ad-m/github-push-action@master
+        uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: gh-pages
+          # Optional but recommended
+          # Defaults to "Apply automatic changes"
+          branch: pdf
+          commit_message: auto build codebook.pdf
+          file_pattern: codebook.pdf
