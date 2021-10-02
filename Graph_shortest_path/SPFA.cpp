@@ -1,23 +1,15 @@
 struct Edge
 {
-    int at;
-    long long cost;
+    int t;
+    long long w;
+    Edge(){};
+    Edge(int _t, long long _w) : t(_t), w(_w) {}
 };
-int n;
-long long dis[MAXN];
-vector<Edge> G[MAXN];
-void init()
-{
-    for (int i = 0; i < n; i++)
-    {
-        G[i].clear();
-        dis[i] = INF;
-    }
-}
+
 bool SPFA(int st)
 {
     vector<int> cnt(n, 0);
-    vector<bool> inq(n, false);
+    bitset<MXV> inq(0);
     queue<int> q;
 
     q.push(st);
@@ -25,26 +17,21 @@ bool SPFA(int st)
     inq[st] = true;
     while (!q.empty())
     {
-        int now = q.front();
+        int cur = q.front();
         q.pop();
-        inq[now] = false;
-        for (auto &e : G[now])
+        inq[cur] = false;
+        for (auto &e : G[cur])
         {
-            if (dis[e.at] > dis[now] + e.cost)
-            {
-                dis[e.at] = dis[now] + e.cost;
-                if (!inq[e.at])
-                {
-                    cnt[e.at]++;
-                    if (cnt[e.at] > n)
-                    {
-                        // negative cycle
-                        return false;
-                    }
-                    inq[e.at] = true;
-                    q.push(e.at);
-                }
-            }
+            if (dis[e.t] <= dis[cur] + e.w)
+                continue;
+            dis[e.t] = dis[cur] + e.w;
+            if (inq[e.t])
+                continue;
+            ++cnt[e.t];
+            if (cnt[e.t] > n)
+                return false; // negtive cycle
+            inq[e.t] = true;
+            q.push(e.t);
         }
     }
     return true;
