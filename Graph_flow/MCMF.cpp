@@ -1,101 +1,96 @@
-struct Edge
+using LL = long long;
+struct MCMF
 {
-    int v;
-    T cost;
-    int cap;
-    Edge(int _v, int _cost, int _cap) : v(_v), cost(_cost), cap(_cap) {}
-};
-vector<int> dis(MXV), pre(MXV);
-vector<vector<int>> G(MXV);
-int n;
-vector<Edge> edges;
-bitset<MXV> inque;
-queue<int> q;
-void init(int _n)
-{
-    n = _n;
-    edges.clear();
-    for (int i = 0; i <= MXV; ++i)
+    struct Edge
     {
-        G[i].clear();
+        int u, v;
+        LL cost, cap;
+    };
+    int n, pre[MXV], cnt[MXV];
+    vector<Edge> edges;
+    vector<int> G[MXV];
+    LL dis[MXV], ansFlow, ansCost;
+    bitset<MXV> inque;
+    void init(int _n)
+    {
+        n = _n;
+        edges.clear();
+        for (int i = 0; i <= n; ++i)
+            G[i].clear();
     }
-}
-void addEdge(int u, int v, T cost, int cap)
-{
-    G[u].push_back((int)edges.size());
-    edges.push_back(Edge(v, cost, cap));
-    G[v].push_back((int)edges.size());
-    edges.push_back(Edge(u, -cost, 0));
-}
-bool spfa(int s, int t)
-{
-    FOR(i, 0, MXV) { dis[i] = INF; }
-    inque.reset();
-    while (!q.empty())
+    void addEdge(int u, int v, LL cost, LL cap)
     {
-        q.pop();
+        G[u].push_back(edges.size());
+        edges.push_back({u, v, cost, cap});
+        G[v].push_back(edges.size());
+        edges.push_back({v, u, -cost, 0});
     }
-    dis[s] = 0;
-    q.push(s);
-    while (!q.empty())
+    bool spfa(int s, int t)
     {
-        int u = q.front();
-        q.pop();
-        inque[u] = false;
-        FOR(i, 0, G[u].size())
+        queue<int> q;
+        bool negative = false;
+        fill(begin(dis), end(dis), INF);
+        fill(begin(pre), end(pre), -1);
+        fill(begin(cnt), end(cnt), 0);
+        inque.reset();
+        dis[s] = 0;
+        cnt[s] = 1;
+        q.push(s);
+        inque[s] = true;
+        while (!q.empty() && !negative)
         {
-            Edge &e = edges[G[u][i]];
-            if (e.cap > 0 && dis[e.v] > dis[u] + e.cost)
+            int u = q.front();
+            q.pop();
+            inque[u] = false;
+            for (int i : G[u])
             {
-                dis[e.v] = dis[u] + e.cost;
-                pre[e.v] = G[u][i];
-                if (!inque[e.v])
+                Edge &e = edges[i];
+                int v = e.v;
+                LL cost = e.cost, cap = e.cap;
+                if (dis[v] > dis[u] + cost && cap > 0)
                 {
-                    q.push(e.v);
-                    inque[e.v] = true;
+                    dis[v] = dis[u] + cost;
+                    pre[v] = i;
+                    if (inque[v])
+                        continue;
+                    q.push(v);
+                    inque[v] = true;
+                    ++cnt[v];
+                    if (cnt[v] == n + 2)
+                    {
+                        negative = true;
+                        break;
+                    }
                 }
             }
         }
+        return dis[t] != INF;
     }
-    return dis[t] != INF;
-}
-void update(int s, int t, int bottleneck)
-{
-    for (int u = t; u != s;)
+    LL update(int u, LL limit)
     {
-        int pos = pre[u];
-        edges[pos].cap -= bottleneck;
-        edges[pos ^ 1].cap += bottleneck;
-        u = edges[pos ^ 1].v;
+        if (pre[u] == -1)
+            return limit;
+        int i = pre[u];
+        Edge &e = edges[i];
+        LL f = update(e.u, min(limit, e.cap));
+        ansCost += f * e.cost;
+        edges[i].cap -= f;
+        edges[i ^ 1].cap += f;
+        return f;
     }
-}
-void sol(int s, int t)
-{
-    int mnCost = 0;
-    while (spfa(s, t))
+    PLL sol(int s, int t, LL D)
     {
-        update(s, t, 1);
-        mnCost += dis[t];
+        ansFlow = ansCost = 0;
+        while (spfa(s, t))
+            ansFlow += update(t, INF);
+        return make_pair(ansFlow, ansCost);
     }
-    cout << mnCost << '\n';
-}
+};
 
-int main()
-{
-    IOS;
-    int n, m;
-    while (cin >> n >> m)
-    {
-        init(n);
-        for (int i = 0, f, t, w; i != m; ++i)
-        {
-            cin >> f >> t >> w;
-            addEdge(f, t, w, 1);
-            addEdge(t, f, w, 1);
-        }
-        int s = 0, t = n + 1;
-        addEdge(s, 1, 0, 2);
-        addEdge(n, t, 0, 2);
-        sol(s, t);
-    }
-}
+/*
+usage
+MCMF<int> mcmf; // declare
+mcmf.init(n, s, t); // initialize, n vertexs, start from s to t
+mcmf.add_edge(x, y, z); // add edge from x to y, weight is z
+mcmf.flow() // calculate max flow 
+*/
