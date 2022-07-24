@@ -78,7 +78,7 @@ struct MCMF
         edges[i ^ 1].cap += f;
         return f;
     }
-    PLL sol(int s, int t, LL D)
+    PLL sol(int s, int t)
     {
         ansFlow = ansCost = 0;
         while (spfa(s, t))
@@ -90,7 +90,7 @@ struct MCMF
 /*
 usage
 MCMF<int> mcmf; // declare
-mcmf.init(n, s, t); // initialize, n vertexs, start from s to t
+mcmf.init(n); // initialize, n vertexs
 mcmf.add_edge(x, y, z); // add edge from x to y, weight is z
-mcmf.flow() // calculate max flow 
+mcmf.sol(s, t, d) // calculate cost flow, start from s to t max flow 
 */
