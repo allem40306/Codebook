@@ -14,7 +14,7 @@
 \usepackage{titlesec}
 \usepackage{amsmath}
 \usepackage[CheckSingle, CJKmath]{xeCJK}
-\usepackage{CJKulem}
+\usepackage{ulem} % xelatex 使用
 
 \usepackage{amsmath, courier, listings, fancyhdr, graphicx}
 \topmargin=0pt
@@ -35,19 +35,8 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\setmainfont[
-    AutoFakeSlant,
-    BoldItalicFeatures={FakeSlant},
-    UprightFont={* Medium},
-    BoldFont={* Bold}
-]{Inconsolata}
-%\setmonofont{Ubuntu Mono}
-\setmonofont[
-    AutoFakeSlant,
-    BoldItalicFeatures={FakeSlant},
-    UprightFont={* Medium},
-    BoldFont={* Bold}
-]{Inconsolata}
+\setmainfont{Inconsolata}
+\setmonofont{Inconsolata}
 \setCJKmainfont{Noto Sans CJK TC}
 \XeTeXlinebreaklocale "zh"                      %中文自動換行
 \XeTeXlinebreakskip = 0pt plus 1pt              %設定段落之間的距離
